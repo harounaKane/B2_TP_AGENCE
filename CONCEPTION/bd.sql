@@ -37,6 +37,9 @@ CREATE TABLE vehicule(
    type VARCHAR(50),
    capacite INT,
    etat VARCHAR(50),
+   nombre_porte INT,
+   longueur INT,
+   cylindre INT,
    id_agence INT NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_agence) REFERENCES Agence(id)
