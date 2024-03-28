@@ -11,6 +11,18 @@ class userModel {
         ]);
     }
 
+    public function getUsers(){
+        $stmt = $this->executerReq("SELECT * FROM personne");
+
+        $tab = [];
+
+        while($res = $stmt->fetch()){
+            $tab[] = new User($res);
+        }
+
+        return $tab;
+    }
+
     public function executerReq($query, array $params = []){
         $stmt = $this->pdo->prepare($query);
 
@@ -23,11 +35,31 @@ class userModel {
         return $stmt;
     }
 
+    public function connexion($login, $mdp){
+        $query = "SELECT * FROM personne WHERE login = :loginSaisi";
+
+        $stmt = $this->executerReq($query, ["loginSaisi" => $login]);
+
+        if( $stmt->rowCount() != 0){
+            $res = $stmt->fetch();
+
+            if( password_verify($mdp, $res['mdp']) ){
+                return new User($res);
+            }
+        }
+        
+        return null;
+    }
+
 
     public function inscription(User $user){
+
         $this->verifTaille("nom", $user->getNom());
         $this->verifTaille("prenom", $user->getPrenom());
-        $this->verifTaille("login", $user->getLogin());
+        $this->verifTaille("login", $user->getLogin(), 4, 8);
+
+        $this->verifSpace("loginSpace", $user->getLogin());
+        $this->verifSpace("mdpSpace", $user->getMdp());
 
         if( isset($_SESSION["errors"]) ){
             return false;
@@ -47,6 +79,16 @@ class userModel {
 
         return true;
 
+    }
+
+    public function verifSpace($attr, $chaine){
+
+        for($i=0; $i<strlen($chaine); $i++){
+            if(ctype_space($chaine[$i])){
+                $_SESSION["errors"][$attr] = "Les espaces ne sont pas permis";
+            }
+        }
+       // 
     }
 
     public function verifTaille($attr, $value, $min = 2, $max = 20){

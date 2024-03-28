@@ -14,9 +14,23 @@
     <header class="bg-light p-4">
         <nav>
             <a href=".">Home</a>
-            <a href="?actionUser=inscription">Inscription</a>
-            <a href="?actionUser=connexion">Conneion</a>
+            
+            <?php if(isset($_SESSION["user"])): ?>
+                <a href="?actionUser=liste">users</a>
+                <a href="?actionUser=deconnexion">Déconnexion</a>
+                
+            <?php else: ?>
+                <a href="?actionUser=inscription">Inscription</a>
+                <a href="?actionUser=connexion">Connexion</a>
+            <?php endif; ?>
+
         </nav>
+
+        <?php if(isset($_SESSION["user"])): ?>
+            <div class="text-end">
+                <?= unserialize($_SESSION["user"])->getPrenom(); ?> 
+            </div>
+        <?php endif; ?>
     </header>
 
     <main class="container-fluid">

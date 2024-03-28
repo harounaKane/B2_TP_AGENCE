@@ -1,7 +1,7 @@
 
     <h2 class="text-center">Inscription</h2>
         <form method="post">
-
+            <input type="hidden" name="token" value="<?= $token; ?>">
             <div class="form-group">
                 <label for="exampleInputEmail1">Nom</label>
                 <input type="text" name="nom" class="form-control" value="<?= $_POST['nom'] ?? '' ?>">
@@ -27,10 +27,16 @@
                 <?php  if(isset($_SESSION["errors"]["login"])): ?>
                 <div class="alert alert-danger p-1 mt-1">Minimum 4 caractères maxi 6</div>
                 <?php  endif; ?>
+                <?php  if(isset($_SESSION["errors"]["loginSpace"])): ?>
+                <div class="alert alert-danger p-1 mt-1"><?= $_SESSION["errors"]["loginSpace"]; ?></div>
+                <?php  endif; ?>
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
                 <input type="password" name="mdp" class="form-control" placeholder="Password">
+                <?php  if(isset($_SESSION["errors"]["mdpSpace"])): ?>
+                <div class="alert alert-danger p-1 mt-1"><?= $_SESSION["errors"]["mdpSpace"]; ?></div>
+                <?php  endif; ?>
             </div>
             <div class="form-check">
                 <input type="radio" name="sexe" class="form-check-input" value="femme" <?= isset($_POST['sexe']) && $_POST['sexe'] == 'femme' ? 'checked' : '' ?> id="exampleCheck1">
