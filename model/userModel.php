@@ -1,15 +1,7 @@
 <?php 
 
-class userModel {
+class userModel extends AbstractModel{
 
-    protected $pdo;
-
-    function __construct(){
-        $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=b2_tp_agence", "root", "", [
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
-    }
 
     public function getUsers(){
         $stmt = $this->executerReq("SELECT * FROM personne");
@@ -23,17 +15,16 @@ class userModel {
         return $tab;
     }
 
-    public function executerReq($query, array $params = []){
-        $stmt = $this->pdo->prepare($query);
-
-        foreach($params as $cle => $valeur){
-            $params[$cle] = htmlentities($valeur);
+    public function getUserById($id){
+        $stmt = $this->executerReq("SELECT * FROM personne WHERE id = :id", ['id' => $id]);
+        
+        if( $stmt->rowCount() == 1 ){
+            return new User($stmt->fetch());
         }
 
-        $stmt->execute($params);
-
-        return $stmt;
+        return null;
     }
+
 
     public function connexion($login, $mdp){
         $query = "SELECT * FROM personne WHERE login = :loginSaisi";
@@ -49,6 +40,35 @@ class userModel {
         }
         
         return null;
+    }
+
+    public function update(User $user){
+
+        $this->verifTaille("nom", $user->getNom());
+        $this->verifTaille("prenom", $user->getPrenom());
+        $this->verifTaille("login", $user->getLogin(), 4, 8);
+
+        $this->verifSpace("loginSpace", $user->getLogin());
+       // $this->verifSpace("mdpSpace", $user->getMdp());
+
+        if( isset($_SESSION["errors"]) ){
+            return false;
+        }
+
+        $query = "UPDATE personne SET prenom = :prenom, nom = :nom, email = :mail, login = :login, sexe = :sexe, role = :role WHERE id = :id";
+
+        $this->executerReq($query, [
+            "sexe"      => $user->getSexe(),
+            "prenom"    => $user->getPrenom(),
+            "nom"       => $user->getNom(),
+            "login"     => $user->getLogin(),
+            "role"      => $user->getRole(),
+            "mail"      => $user->getEmail(),
+            "id"        => $user->getId()
+        ]);
+
+        return true;
+
     }
 
 
@@ -79,6 +99,12 @@ class userModel {
 
         return true;
 
+    }
+
+    public function delete(int $id){
+        $res = $this->executerReq("DELETE FROM personne WHERE id = :id", ["id" => $id]);
+
+        return $res;
     }
 
     public function verifSpace($attr, $chaine){

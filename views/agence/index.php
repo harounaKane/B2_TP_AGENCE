@@ -1,21 +1,21 @@
 
-    <h2 class="text-center">Liste users</h2>
+    <h2 class="text-center">Liste agence</h2>
 
     <table class="table table-striped">
         <tr class="table-dark">
-            <td>Prenom</td>
             <td>Nom</td>
+            <td>Adresse</td>
             <td>Action</td>
         </tr>
 
-        <?php foreach($users as $user): ?>
+        <?php foreach($agences as $agence): ?>
             <tr>
-                <td> <?= $user->getPrenom(); ?> </td>
-                <td> <?= $user->getNom(); ?> </td>
+                <td> <?= $agence->getNom(); ?> </td>
+                <td> <?= $agence->getAdresse().", ".$agence->getVille(); ?> </td>
                 <td>
-                    <a href="?actionAdmin=update&id=<?= $user->getId(); ?>">U</a>
+                    <a href="?actionAdmin=update&id=<?= $agence->getId(); ?>">U</a>
                     <form action="" method="post" class="d-inline">
-                        <input type="hidden" name="id" value="<?= $user->getId(); ?>">
+                        <input type="hidden" name="id" value="<?= $agence->getId(); ?>">
                         <input type="hidden" name="token" value="<?= $token; ?>">
                         <input type="submit" value="X">
                     </form>

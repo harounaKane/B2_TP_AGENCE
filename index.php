@@ -17,13 +17,17 @@ spl_autoload_register(function($class){
 });
 
 $userCtl = new UserController();
+$homeCtl = new HomeController();
+$agcCtl = new AgenceController();
 
 
 
 try{
   
   $userCtl->userHttp();
+  $homeCtl->home();
+  $agcCtl->httpAgence();
 
 }catch(Exception $e){
-  echo $e->getMessage();
+  $homeCtl->render("404/404", ["erreur" => $e->getMessage()]);
 }

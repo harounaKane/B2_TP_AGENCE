@@ -16,7 +16,8 @@
             <a href=".">Home</a>
             
             <?php if(isset($_SESSION["user"])): ?>
-                <a href="?actionUser=liste">users</a>
+                <a href="?actionAdmin=liste">Users</a>
+                <a href="?actionAgence=agence">Agence</a>
                 <a href="?actionUser=deconnexion">Déconnexion</a>
                 
             <?php else: ?>

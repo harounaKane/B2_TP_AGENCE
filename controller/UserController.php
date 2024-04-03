@@ -1,21 +1,79 @@
 <?php
 
-class UserController{
+class UserController extends AbstractController{
 
 
     public function userHttp(){
         
-        if( isset($_GET['actionUser']) ){
-            $action = $_GET['actionUser'];
+        $this->actionAdmin();
+
+        $this->actionUser();
+    }
+
+    public function actionAdmin(){
+        if( isset($_GET['actionAdmin']) ){
+
+            $action = $_GET['actionAdmin'];
             $userMdl = new UserModel();
 
-            
-            $token = password_hash("monToken", PASSWORD_BCRYPT);
+        
+            if( !$this->isAdmin() ){
+                header("location: ?actionUser=connexion");
+                exit;
+            }
+    
+            switch($action){
+                case "liste":
+
+                    if( isset($_POST['id']) && $this->isValid($_POST['token']) ){
+                        $userMdl->delete($_POST["id"]);
+                        
+                        header("location: ?actionAdmin=liste");
+                        exit;
+                    }
+
+                    $listeUsers = $userMdl->getUsers();
+                    $tab = ["users" => $listeUsers, "token" => $this->getToken()];
+
+                    $this->render("user/index", $tab);
+                    break;
+
+                case "update":
+
+                    if( isset($_POST['login']) && $this->isValid($_POST['token']) ){
+                        $userToUp = new User($_POST);
+                        $userMdl->update($userToUp);
+                        header("location: ?actionAdmin=liste");
+                        exit;
+                     //   var_dump($userToUp);
+                    }
+                    
+                    $id = intval($_GET["id"]);
+                    $user = $userMdl->getUserById($id);
+                  //  var_dump($user);
+                    $this->render("user/ajouter", [
+                        "token" => $this->getToken(),
+                        "user"  => $user
+                    ]);
+                    
+                    break;
+            }
+
+        }
+    }
+
+
+    public function actionUser(){
+        
+        if( isset($_GET['actionUser']) ){
+
+            $action = $_GET['actionUser'];
+            $userMdl = new UserModel();
 
             switch ($action) {
                 case 'inscription':
              
-                    if( isset($_POST['login']) && password_verify("monToken", $_POST['token']) ){
+                    if( isset($_POST['login']) && $this->isValid($_POST['token']) ){
                         $u = new User($_POST);
                         $bool = $userMdl->inscription( $u );
 
@@ -25,12 +83,12 @@ class UserController{
                         }
                     }
 
-                    $this->render("user/inscription", ["token" => $token]);
+                    $this->render("user/inscription", ["token" => $this->getToken()]);
                     break;
 
                 case "connexion":
 
-                    if( isset($_POST['login']) &&  password_verify("monToken", $_POST['token']) && $_SERVER['REQUEST_METHOD'] === "POST"){
+                    if( isset($_POST['login']) &&  $this->isValid($_POST['token']) && $_SERVER['REQUEST_METHOD'] === "POST"){
 
                         $user = $userMdl->connexion($_POST['login'], $_POST['mdp']);
 
@@ -41,57 +99,21 @@ class UserController{
                             exit;
                         }
                     }
-                    $this->render("user/connexion", ["token" => $token]);
+
+                    $this->render("user/connexion", ["token" => $this->getToken()]);
                     break;
 
-                case "liste":
-
-                    if( !$this->isConnected() ){
-                        header("location: ?actionUser=connexion");
-                        exit;
-                    }
-
-                    $listeUsers = $userMdl->getUsers();
-                    $tab = ["users" => $listeUsers, "token" => $token];
-
-                    $this->render("user/index", $tab);
-                    break;
-
+                
                 case "deconnexion":
-                    session_destroy();
-
-                    header("location: .");
-                    exit;
-                   
-            
+                        session_destroy();
+    
+                        header("location: .");
+                        exit;
                 default:
-                    break;
+                $this->render("404/404", ["erreur" => "Mauvaise requête http pour " . $action]);
             }
 
-        }else{
-            $this->render("index");
         }
-    }
-
-    public function render($view, $data = []){
-        ob_start();
-
-        extract($data);
-
-        include "views/". $view .".php";
-
-        $content = ob_get_clean();
-
-        include "views/template.php";
-    }
-
-    public function isConnected(){
-        if( isset($_SESSION['user']) ){
-            return true;
-        }
-        return false;
-
-      //  return isset($_SESSION['user']) ? true : false;
     }
 
 }
