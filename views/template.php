@@ -13,16 +13,17 @@
 
     <header class="bg-light p-4">
         <nav>
-            <a href=".">Home</a>
+            <a class="btn btn-success" href=".">Home</a>
             
             <?php if(isset($_SESSION["user"])): ?>
-                <a href="?actionAdmin=liste">Users</a>
-                <a href="?actionAgence=agence">Agence</a>
-                <a href="?actionUser=deconnexion">Déconnexion</a>
+                <a class="btn btn-success" href="?actionAdmin=liste">Users</a>
+                <a class="btn btn-success" href="?actionAgence=agence">Agence</a>
+                <a class="btn btn-success" href="?actionVehicule=vehicule">Véhicule</a>
+                <a class="btn btn-danger" href="?actionUser=deconnexion">Déconnexion</a>
                 
             <?php else: ?>
-                <a href="?actionUser=inscription">Inscription</a>
-                <a href="?actionUser=connexion">Connexion</a>
+                <a class="btn btn-success" href="?actionUser=inscription">Inscription</a>
+                <a class="btn btn-success" href="?actionUser=connexion">Connexion</a>
             <?php endif; ?>
 
         </nav>

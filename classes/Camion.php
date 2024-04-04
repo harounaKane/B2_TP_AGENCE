@@ -1,11 +1,11 @@
 <?php 
 
 class Camion extends QuatreRoues{
-    private $longeur;
+    private $longueur;
 
-    public function getLongeur() {return $this->longeur;}
+    public function getLongueur() {return $this->longueur;}
 
-	public function setLongeur( $longeur): void {$this->longeur = $longeur;}
+	public function setLongueur( $longueur): void {$this->longueur = $longueur;}
 
 	
 }

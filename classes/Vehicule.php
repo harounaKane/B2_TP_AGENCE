@@ -5,10 +5,36 @@ abstract class Vehicule{
     private $marque;
     private $modele;
     private $prix_journalier;
-    private $couleur;
+    private $img;
     private $poids;
     private $type;
-    private $agence;
+	private $etat;
+    private $capacite;
+    private $id_agence;
+
+	public function __construct(array $data = []){
+
+		foreach($data as $key => $value){
+			//création des set...
+			$methode = "set" . ucfirst($key);
+
+			//test si le setter existe
+			if( method_exists($this, $methode) ){
+				//appel du setter et on passe le '$value' en paramètre
+				$this->$methode($value);
+			}
+		}
+
+	}
+
+	public function getPrixJournalier() {return $this->prix_journalier;}
+
+
+	public function getEtat() {return $this->etat;}
+
+	public function getIdAgence() {return $this->id_agence;}
+
+	
     
     public function getId() {return $this->id;}
 
@@ -16,15 +42,16 @@ abstract class Vehicule{
 
 	public function getModele() {return $this->modele;}
 
-	public function getPrixJournalier() {return $this->prix_journalier;}
+	public function getPrix_journalier() {return $this->prix_journalier;}
 
-	public function getCouleur() {return $this->couleur;}
+	public function getImg() {return $this->img;}
 
 	public function getPoids() {return $this->poids;}
 
 	public function getType() {return $this->type;}
+	public function getCapacite() {return $this->capacite;}
 
-	public function getAgence() {return $this->agence;}
+	public function getId_agence() {return $this->id_agence;}
 
 	public function setId( $id): void {$this->id = $id;}
 
@@ -32,15 +59,25 @@ abstract class Vehicule{
 
 	public function setModele( $modele): void {$this->modele = $modele;}
 
-	public function setPrixJournalier( $prix_journalier): void {$this->prix_journalier = $prix_journalier;}
+	public function setPrix_journalier( $prix_journalier): void {$this->prix_journalier = $prix_journalier;}
 
-	public function setCouleur( $couleur): void {$this->couleur = $couleur;}
+	public function setImg( $img): void {$this->img = $img;}
 
 	public function setPoids( $poids): void {$this->poids = $poids;}
 
 	public function setType( $type): void {$this->type = $type;}
+	public function setCapacite( $type): void {$this->capacite = $type;}
 
-	public function setAgence( $agence): void {$this->agence = $agence;}
+	public function setId_agence( $agence): void {$this->id_agence = $agence;}
 
+
+	public function setPrixJournalier( $prix_journalier): void {$this->prix_journalier = $prix_journalier;}
+
+
+	public function setEtat( $etat): void {$this->etat = $etat;}
+
+	public function setIdAgence( $id_agence): void {$this->id_agence = $id_agence;}
+
+	
 	
 }

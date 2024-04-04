@@ -19,6 +19,7 @@ spl_autoload_register(function($class){
 $userCtl = new UserController();
 $homeCtl = new HomeController();
 $agcCtl = new AgenceController();
+$vehCtl = new VehiculeController();
 
 
 
@@ -27,6 +28,7 @@ try{
   $userCtl->userHttp();
   $homeCtl->home();
   $agcCtl->httpAgence();
+  $vehCtl->vehiculeHttp();
 
 }catch(Exception $e){
   $homeCtl->render("404/404", ["erreur" => $e->getMessage()]);
