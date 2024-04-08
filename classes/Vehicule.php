@@ -27,6 +27,10 @@ abstract class Vehicule{
 
 	}
 
+	public function getPhoto(){
+		return "public/images/" . $this->img;
+	}
+
 	public function getPrixJournalier() {return $this->prix_journalier;}
 
 

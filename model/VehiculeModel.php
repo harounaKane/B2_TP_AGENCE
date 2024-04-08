@@ -54,4 +54,16 @@ class VehiculeModel extends AbstractModel{
 
         return $tab;
     }
+
+    public function getVehiculeById(int $id){
+        $stmt = $this->executerReq("SELECT * FROM vehicule WHERE id = :id", ["id" => $id]);
+        $res = $stmt->fetch();
+        if( $res['type'] == "camion" ){
+            return new Camion($res);
+        }else if( $res['type'] == "voiture" ){
+            return new Voiture($res);
+        }else if( $res['type'] == "moto" ){
+            return new DeuxRoues($res);
+        }
+    }
 }

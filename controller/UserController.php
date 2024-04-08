@@ -69,8 +69,18 @@ class UserController extends AbstractController{
 
             $action = $_GET['actionUser'];
             $userMdl = new UserModel();
+            $resmdl = new ReservationModel();
+
+            extract($_GET);
 
             switch ($action) {
+
+                case "compte":
+                    $user = $userMdl->getUserById($id);
+                    $reservations = $resmdl->reservationsByClient($user);
+                    $this->render("user/compte", ["reservations" => $reservations]);
+                    break;
+
                 case 'inscription':
              
                     if( isset($_POST['login']) && $this->isValid($_POST['token']) ){
@@ -94,6 +104,7 @@ class UserController extends AbstractController{
 
                         if( $user != null ){
                             $_SESSION['user'] = serialize($user);
+                            $_SESSION['ROLE'] = $user->getRole();
 
                             header("location: .");
                             exit;

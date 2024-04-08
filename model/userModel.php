@@ -1,6 +1,6 @@
 <?php 
 
-class userModel extends AbstractModel{
+class UserModel extends AbstractModel{
 
 
     public function getUsers(){

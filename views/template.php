@@ -16,9 +16,14 @@
             <a class="btn btn-success" href=".">Home</a>
             
             <?php if(isset($_SESSION["user"])): ?>
-                <a class="btn btn-success" href="?actionAdmin=liste">Users</a>
-                <a class="btn btn-success" href="?actionAgence=agence">Agence</a>
-                <a class="btn btn-success" href="?actionVehicule=vehicule">Véhicule</a>
+
+                <?php if($_SESSION["ROLE"] == "ADMIN"): ?>
+                    <a class="btn btn-success" href="?actionAdmin=liste">Users</a>
+                    <a class="btn btn-success" href="?actionAgence=agence">Agence</a>
+                    <a class="btn btn-success" href="?actionVehicule=vehicule">Véhicule</a>
+                <?php endif; ?>
+
+                <a class="btn btn-primary" href="?actionUser=compte&id=<?= unserialize($_SESSION["user"])->getId(); ?> ">Mon compte</a>
                 <a class="btn btn-danger" href="?actionUser=deconnexion">Déconnexion</a>
                 
             <?php else: ?>

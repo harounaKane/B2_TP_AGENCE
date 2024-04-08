@@ -4,7 +4,11 @@ class HomeController extends AbstractController{
 
     public function home(){
         if( empty($_GET) ){
-            $this->render("index");
+            $vehiculeMdl = new VehiculeModel();
+
+            $vehicules = $vehiculeMdl->getAllVehicules();
+
+            $this->render("index", ["vehicules" => $vehicules]);
         }
     }
 }

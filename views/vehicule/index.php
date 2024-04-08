@@ -14,7 +14,9 @@
 
         <?php foreach($vehicules as $veh): ?>
             <tr>
-                <td> <?= $veh->getImg(); ?> </td>
+                <td>
+                    <img src="<?= $veh->getPhoto(); ?>" alt="">
+                </td>
                 <td> <?= $veh->getMarque(); ?> </td>
                 <td> <?= $veh->getPrix_journalier(); ?> </td>
                 <td> <?= $veh->getId_agence()->getNom(); ?> </td>
