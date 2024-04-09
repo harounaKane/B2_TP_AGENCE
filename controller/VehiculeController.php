@@ -9,6 +9,8 @@ class VehiculeController extends AbstractController{
             $agMdl = new AgenceModel();
             $resMdl = new ReservationModel();
             $userMdl = new UserModel();
+            $commMdl = new CommentModel();
+
 
             extract($_GET);
 
@@ -17,18 +19,30 @@ class VehiculeController extends AbstractController{
                 case "detail" :
 
                     if( isset($_POST['debut']) ){
+
+
+                        //VERIFIE SESSION
+                        if( !isset($_SESSION['user']) ){
+                            $_SESSION["detail"] = '?actionVehicule=detail&id=' . $id;
+                            header("location: ?actionUser=connexion");
+                            exit;
+                        }
+
+                        $iduser = unserialize($_SESSION['user'])->getId();
                         $reservation = new Reservation($_POST);
 
-                        $reservation->setPersonne( $userMdl->getUserById($_POST['id_personne']) );
+                        $reservation->setPersonne( $this->getuser() );
                         $reservation->setVehicule( $vehMdl->getVehiculeById($_POST['id_vehicule']) );
 
                         $resMdl->ajouter($reservation);
 
-                        header("location: .");
+                        header("location: ?actionUser=compte&id=".$iduser);
                         exit;
                     }
 
                     $vehicule = $vehMdl->getVehiculeById($id);
+                    $commentaires = $commMdl->getCommByVehicule($id);
+                  
                     $this->render("vehicule/show", ["vehicule" => $vehicule]);
                     break;
                 case 'vehicule':

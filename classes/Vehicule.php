@@ -10,7 +10,9 @@ abstract class Vehicule{
     private $type;
 	private $etat;
     private $capacite;
-    private $id_agence;
+    private Agence $agence;
+	
+	private $comments = [];
 
 	public function __construct(array $data = []){
 
@@ -36,7 +38,7 @@ abstract class Vehicule{
 
 	public function getEtat() {return $this->etat;}
 
-	public function getIdAgence() {return $this->id_agence;}
+	public function getAgence() {return $this->agence;}
 
 	
     
@@ -55,7 +57,7 @@ abstract class Vehicule{
 	public function getType() {return $this->type;}
 	public function getCapacite() {return $this->capacite;}
 
-	public function getId_agence() {return $this->id_agence;}
+	public function getId_agence(): Agence {return $this->agence;}
 
 	public function setId( $id): void {$this->id = $id;}
 
@@ -72,7 +74,7 @@ abstract class Vehicule{
 	public function setType( $type): void {$this->type = $type;}
 	public function setCapacite( $type): void {$this->capacite = $type;}
 
-	public function setId_agence( $agence): void {$this->id_agence = $agence;}
+	public function setAgence(Agence $agence): void {$this->agence = $agence;}
 
 
 	public function setPrixJournalier( $prix_journalier): void {$this->prix_journalier = $prix_journalier;}
@@ -80,7 +82,7 @@ abstract class Vehicule{
 
 	public function setEtat( $etat): void {$this->etat = $etat;}
 
-	public function setIdAgence( $id_agence): void {$this->id_agence = $id_agence;}
+	public function setIdAgence( $id_agence): void {$this->agence = $id_agence;}
 
 	
 	

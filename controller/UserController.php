@@ -70,13 +70,30 @@ class UserController extends AbstractController{
             $action = $_GET['actionUser'];
             $userMdl = new UserModel();
             $resmdl = new ReservationModel();
+            $commentMdl = new CommentModel();
+            $vehMdl = new VehiculeModel();
 
             extract($_GET);
 
             switch ($action) {
 
                 case "compte":
+
                     $user = $userMdl->getUserById($id);
+
+                    //AJOUT COMMENTAIRE
+                    if( isset($_POST['comment']) ){
+                        $u = $this->getuser();
+                        $veh = $vehMdl->getVehiculeById($_POST['vehicule']);
+                        $com = new Commentaire($_POST);
+                        $com->setPersonne($u);
+                        $com->setVehicule($veh);
+
+                        $commentMdl->ajouter($com);
+
+                        
+                    }
+
                     $reservations = $resmdl->reservationsByClient($user);
                     $this->render("user/compte", ["reservations" => $reservations]);
                     break;
@@ -105,6 +122,12 @@ class UserController extends AbstractController{
                         if( $user != null ){
                             $_SESSION['user'] = serialize($user);
                             $_SESSION['ROLE'] = $user->getRole();
+
+                            //RETOUR SUR LA PAGE DETAIL
+                            if( $_SESSION["detail"] ){
+                                header("location: " . $_SESSION["detail"]);
+                                exit;
+                            }
 
                             header("location: .");
                             exit;

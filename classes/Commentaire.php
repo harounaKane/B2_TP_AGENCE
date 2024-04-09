@@ -4,7 +4,21 @@ class Commentaire{
     private $personne;
     private $vehicule;
     private $comment;
-    private $date_comment;
+    private $dateComment;
+
+	public function __construct(array $data = []){
+
+		foreach($data as $key => $value){
+			//création des set...
+			$methode = "set" . ucfirst($key);
+
+			//test si le setter existe
+			if( method_exists($this, $methode) ){
+				//appel du setter et on passe le '$value' en paramètre
+				$this->$methode($value);
+			}
+		}
+	}
 
     public function getPersonne() {return $this->personne;}
 
@@ -12,7 +26,7 @@ class Commentaire{
 
 	public function getComment() {return $this->comment;}
 
-	public function getDateComment() {return $this->date_comment;}
+	public function getDateComment() {return $this->dateComment;}
 
 	public function setPersonne( $personne): void {$this->personne = $personne;}
 
@@ -20,7 +34,7 @@ class Commentaire{
 
 	public function setComment( $comment): void {$this->comment = $comment;}
 
-	public function setDateComment( $date_comment): void {$this->date_comment = $date_comment;}
+	public function setDateComment( $date_comment): void {$this->dateComment = $date_comment;}
 
 	
 }

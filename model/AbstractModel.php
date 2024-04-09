@@ -23,4 +23,14 @@ abstract class AbstractModel{
 
         return $stmt;
     }
+
+    public function getById($table, $id){
+        $stmt = $this->executerReq("SELECT * FROM $table WHERE id = :id", ['id' => $id]);
+        
+        if( $stmt->rowCount() == 1 ){
+            return $stmt->fetch();
+        }
+
+        return null;
+    }
 }

@@ -21,8 +21,6 @@ $homeCtl = new HomeController();
 $agcCtl = new AgenceController();
 $vehCtl = new VehiculeController();
 
-
-
 try{
   
   $userCtl->userHttp();

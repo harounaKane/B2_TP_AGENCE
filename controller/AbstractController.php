@@ -62,5 +62,9 @@ abstract class AbstractController{
     public function isAdmin(){
        return ( $this->isConnected() && unserialize($_SESSION['user'])->getRole() == "ADMIN" );
     }
+
+    public function getuser(){
+        return unserialize($_SESSION['user']);
+    }
     
 }

@@ -17,7 +17,6 @@
             <h4 class="h2">Réserver</h4>
             <form action="" method="post">
                 <input type="hidden" name="id_vehicule" value="<?= $vehicule->getId() ?>">
-                <input type="hidden" name="id_personne" value="<?= unserialize($_SESSION['user'])->getId() ?>">
                 <div class="form-group">
                     <label for="">date début</label>
                     <input type="date" name="debut" class="form-control">

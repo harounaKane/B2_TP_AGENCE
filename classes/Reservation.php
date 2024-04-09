@@ -21,9 +21,9 @@ class Reservation{
 		}
 	}
 
-    public function getPersonne() {return $this->personne;}
+    public function getPersonne(): User {return $this->personne;}
 
-	public function getVehicule() {return $this->vehicule;}
+	public function getVehicule(): Vehicule {return $this->vehicule;}
 
 	public function getDateReservation() {return $this->date_reservation;}
 
