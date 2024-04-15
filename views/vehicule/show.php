@@ -31,3 +31,12 @@
 
     </div>
 
+    <?php foreach($commentaires as $comment): ?>
+        <div>Par <strong> <?= $comment->getPersonne()->getPrenom(); ?> </strong> </div>
+        <div>Le <strong> <?= $comment->getDateComment(); ?> </strong> </div>
+        <div> <?= $comment->getComment(); ?> </div>
+
+        <hr>
+    <?php endforeach; ?>
+
+

@@ -11,6 +11,12 @@ abstract class AbstractModel{
         ]);
     }
 
+    function getAll($table){
+        $stmt = $this->executerReq("SELECT * FROM $table");
+
+        return $stmt->fetchAll();
+    }
+
     
     public function executerReq($query, array $params = []){
         $stmt = $this->pdo->prepare($query);

@@ -41,9 +41,13 @@ class VehiculeController extends AbstractController{
                     }
 
                     $vehicule = $vehMdl->getVehiculeById($id);
-                    $commentaires = $commMdl->getCommByVehicule($id);
-                  
-                    $this->render("vehicule/show", ["vehicule" => $vehicule]);
+                    $commentaires = $commMdl->getCommByVehiculeId($id);
+                
+                    $this->render("vehicule/show", [
+                        "vehicule" => $vehicule,
+                        "commentaires" => $commentaires
+                        ]
+                    );
                     break;
                 case 'vehicule':
                     if( !$this->isAdmin() ){

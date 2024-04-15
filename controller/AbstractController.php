@@ -66,5 +66,10 @@ abstract class AbstractController{
     public function getuser(){
         return unserialize($_SESSION['user']);
     }
+
+    public function redirect($path){
+        header("location: " . $path);
+        exit;
+    }
     
 }

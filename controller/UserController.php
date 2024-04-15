@@ -18,8 +18,7 @@ class UserController extends AbstractController{
 
         
             if( !$this->isAdmin() ){
-                header("location: ?actionUser=connexion");
-                exit;
+                $this->redirect("?actionUser=connexion");
             }
     
             switch($action){
@@ -28,8 +27,7 @@ class UserController extends AbstractController{
                     if( isset($_POST['id']) && $this->isValid($_POST['token']) ){
                         $userMdl->delete($_POST["id"]);
                         
-                        header("location: ?actionAdmin=liste");
-                        exit;
+                        $this->redirect("location: ?actionAdmin=liste");
                     }
 
                     $listeUsers = $userMdl->getUsers();
@@ -43,14 +41,13 @@ class UserController extends AbstractController{
                     if( isset($_POST['login']) && $this->isValid($_POST['token']) ){
                         $userToUp = new User($_POST);
                         $userMdl->update($userToUp);
-                        header("location: ?actionAdmin=liste");
-                        exit;
+                        $this->redirect("location: ?actionAdmin=liste");
                      //   var_dump($userToUp);
                     }
                     
                     $id = intval($_GET["id"]);
                     $user = $userMdl->getUserById($id);
-                  //  var_dump($user);
+                    var_dump($user);
                     $this->render("user/ajouter", [
                         "token" => $this->getToken(),
                         "user"  => $user
@@ -90,8 +87,6 @@ class UserController extends AbstractController{
                         $com->setVehicule($veh);
 
                         $commentMdl->ajouter($com);
-
-                        
                     }
 
                     $reservations = $resmdl->reservationsByClient($user);
@@ -105,8 +100,7 @@ class UserController extends AbstractController{
                         $bool = $userMdl->inscription( $u );
 
                         if( $bool ){
-                            header("location: .");
-                            exit;
+                            $this->redirect(".");
                         }
                     }
 
@@ -125,12 +119,11 @@ class UserController extends AbstractController{
 
                             //RETOUR SUR LA PAGE DETAIL
                             if( $_SESSION["detail"] ){
-                                header("location: " . $_SESSION["detail"]);
+                                $this->redirect( $_SESSION["detail"]);
                                 exit;
                             }
 
-                            header("location: .");
-                            exit;
+                            $this->redirect(".");
                         }
                     }
 
@@ -141,8 +134,7 @@ class UserController extends AbstractController{
                 case "deconnexion":
                         session_destroy();
     
-                        header("location: .");
-                        exit;
+                        $this->redirect(".");
                 default:
                 $this->render("404/404", ["erreur" => "Mauvaise requête http pour " . $action]);
             }

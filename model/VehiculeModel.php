@@ -46,7 +46,7 @@ class VehiculeModel extends AbstractModel{
         $agMdl = new AgenceModel();
 
         while($res = $stmt->fetch()){
-            $res['id_agence'] = $agMdl->getAgenceById($res['id_agence']);
+            $res['agence'] = $agMdl->getAgenceById($res['id_agence']);
             $v = new Voiture($res);
 
             $tab[] = $v;
@@ -55,6 +55,13 @@ class VehiculeModel extends AbstractModel{
         return $tab;
     }
 
+    /**
+     * récupère un véhicule par son id.
+     * prend en paramètre $id de type int
+     * @param int $id
+     * @return Vehicule
+     * @author Harouna
+     */
     public function getVehiculeById(int $id){
         $res = $this->getById("vehicule", $id);
 
@@ -70,6 +77,7 @@ class VehiculeModel extends AbstractModel{
         }
 
         $v->setAgence($agence);
+        
         return $v;
     }
 }

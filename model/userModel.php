@@ -4,22 +4,22 @@ class UserModel extends AbstractModel{
 
 
     public function getUsers(){
-        $stmt = $this->executerReq("SELECT * FROM personne");
 
-        $tab = [];
+        $tab = $this->getAll("personne");
 
-        while($res = $stmt->fetch()){
-            $tab[] = new User($res);
+        for($i=0; $i < count($tab); $i++){
+            $tab[$i] = new User($tab[$i]);
         }
 
         return $tab;
     }
 
     public function getUserById($id){
-        $stmt = $this->executerReq("SELECT * FROM personne WHERE id = :id", ['id' => $id]);
         
-        if( $stmt->rowCount() == 1 ){
-            return new User($stmt->fetch());
+        $res = $this->getById("personne",$id);
+
+        if( $res != null ){
+            return new User($res);
         }
 
         return null;
